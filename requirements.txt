@@ -3,3 +3,5 @@ linopy
 xarray
 numpy
 matplotlib
+sparse
+dask
