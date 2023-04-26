@@ -90,7 +90,10 @@ def add_capacity_variables(ds: xr.Dataset, m: Model) -> Model:
     # Create the required index
     RTeY = [ds.coords['REGION'], ds.coords['TECHNOLOGY'], ds.coords['YEAR']]
 
-    m.add_variables(lower=0, upper=inf, coords=RTeY, name='NumberOfNewTechnologyUnits', integer=True)
+    # masks
+    mask = ds['CapacityOfOneTechnologyUnit'].notnull()
+
+    m.add_variables(lower=0, upper=inf, coords=RTeY, name='NumberOfNewTechnologyUnits', integer=True, mask=mask)
     m.add_variables(lower=0, upper=inf, coords=RTeY, name='NewCapacity', integer=False)
     m.add_variables(lower=0, upper=inf, coords=RTeY, name='AccumulatedNewCapacity', integer=False)
     m.add_variables(lower=0, upper=inf, coords=RTeY, name='TotalCapacityAnnual', integer=False)
