@@ -12,8 +12,11 @@ def validate_user_data(ds: xr.Dataset):
 
     msg = """The fraction of annual energy-service/fuel/proxy demand that is
            required in each time step should sum to 1."""
+    errors = []
     if not (df_sum == 1).values.all():
         for row in df_sum.iterrows():
             if (row[1] != 1).all():
-                raise ValueError(f"{msg}: {row[0]}")
+                print(row[0])
+                errors.append((row[0], float(row[1].values)))
+        raise ValueError(f"{msg}:\n\n{errors}")
     return True
