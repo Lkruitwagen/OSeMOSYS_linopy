@@ -54,3 +54,9 @@ def test_validate_demand_profile_raises(dataset):
 
     with pytest.raises(ValueError):
         assert validate_user_data(dataset)
+
+def test_validate_demand_profile_approx(dataset):
+
+    dataset['SpecifiedDemandProfile'].data = np.array([[[[0.99999998], [0.00000001]]]])
+
+    assert validate_user_data(dataset)

@@ -1,4 +1,5 @@
 import xarray as xr
+from numpy import isclose
 
 
 def validate_user_data(ds: xr.Dataset):
@@ -13,9 +14,9 @@ def validate_user_data(ds: xr.Dataset):
     msg = """The fraction of annual energy-service/fuel/proxy demand that is
            required in each time step should sum to 1."""
     errors = []
-    if not (df_sum == 1).values.all():
+    if not isclose(df_sum.values, 1,atol=1e-3).all():
         for row in df_sum.iterrows():
-            if (row[1] != 1).all():
+            if not isclose(df_sum.values, 1,atol=1e-3).all():
                 print(row[0])
                 errors.append((row[0], float(row[1].values)))
         raise ValueError(f"{msg}:\n\n{errors}")
