@@ -2,8 +2,16 @@
 
 # Model Nameplate
 id: my-model
-long_name: "My Example Model - California+Texas interconnection"
-description: "California+Texas interconnection - An example model to show how we can create an OSeMOSYS model from json/yaml"
+long_name: "Example Model - California+Texas interconnection"
+description: >
+  California+Texas interconnection.
+  An example model to show how we can create an OSeMOSYS model from json/yaml.
+  In this model, California and Texas have comparative advantages in solar and wind respectively, 
+  and start with very little interconnection.
+  Both states can import gas and coal from pacific and atlantic markets respectively.
+  Texas can also extract gas and coal, but their ability to do so diminishes with time.
+  The electricity system is constrained to acheive net zero by the end of the model period.
+
 
 # REGIONS
 regions:
@@ -72,14 +80,6 @@ renewable_targets:
 # RESERVE MARGINS
 reserve_margins_commodity: null
 reserve_margins_technology: 0.1
-
-# TECHNOLOGIES - PRODUCTION
-
-# TECHNOLOGIES - STORAGE
-
-# TECHNOLOGIES - TRANSMISSION
-
-
 
 
 # custom defined cross-references
