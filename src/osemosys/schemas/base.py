@@ -3,13 +3,13 @@ Why?
 -> put documentation/descirptions where the action is.
 -> consolidate input files
 -> do validation early, using pydantic
--> JSONify
--> some explicitify renaming
+-> JSONify for IO
+-> some renaming to make more explicit
 """
 
 """
 extras:
-  - parse basic python
+  - parse basic python expressions (dict+list comps + expressions)
   - use yaml links *&
   - wildcard str classes, e.g. *
   - inequality for year, e.g. >=2030
@@ -21,7 +21,7 @@ extras:
 # ####################
 
 class OSeMOSYSBase(BaseModel)
-    code: str
+    id: str
     long_name: str | None
     description: str | None
 

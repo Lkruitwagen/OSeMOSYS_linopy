@@ -17,15 +17,13 @@ class Technology(OSeMOSYSBase):
     # unit conversions
     activity_unit_ratio: float # one unit of capacity used for a whole year
 
-    # economic grain size, e.g. only 5000MW plants (MILP problem)
+    # economic grain size, e.g. only 5000MW plants (forces MILP problem)
     capacity_addition_size: RegionData | None 
 
     # capacity, lifespan, availability
     availability_factor: RegionYearData 
     capacity_factor: RegionYearTimeData
     operating_life: RegionData
-    include_regions: List[str] | None
-    exclude_regions: List[str] | None
 
     # financials
     capex: RegionYearData
@@ -38,10 +36,13 @@ class Technology(OSeMOSYSBase):
     residual_capacity: RegionYearData
 
     # constraints - capacity
-    gross_capacity_max: RegionYearData          # potential
-    additional_capacity_max: RegionYearData     # ?? investment limits?
-    gross_capacity_min: RegionYearData          # must-build
-    additional_capacity_min: RegionYearData
+    gross_capacity_max: RegionYearData                      # potential
+    additional_capacity_max_ceil: RegionYearData            # Absolute value (ceil relative to growth rate)
+    additional_capacity_max_floor: RegionYearData           # absolute value (floor relative to growth rate)
+    additional_capacity_max_growth_rate: RegionYearData     # growth rate (<1.)
+    gross_capacity_min: RegionYearData                      # must-build
+    additional_capacity_min: RegionYearData                 # Absolute must-build value
+    additional_capacity_min_growth_rate: RegionYearData     # growth rate (<1.)
 
     # constraints - activity
     annual_activity_max: RegionYearData
@@ -52,6 +53,8 @@ class Technology(OSeMOSYSBase):
 
 
 class TechnologyStorage(Technology):
+    include_regions: List[str] | None
+    exclude_regions: List[str] | None
     minimum_charge: RegionData
     initial_level: RegionData
     max_discharge_rate: RegionData
@@ -60,9 +63,12 @@ class TechnologyStorage(Technology):
 
 
 class TechnologyProduction(Technology):
+    include_regions: List[str] | None
+    exclude_regions: List[str] | None
     is_renewable: bool
 
 
 
 class TechnologyTransmission(Technology):
-    pass
+    include_region_pairs: List[str] | None
+    exclude_region_pairs: List[str] | None
