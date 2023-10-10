@@ -28,7 +28,7 @@ class OSeMOSYSBase(BaseModel)
 class RegionTechnologyYearData(BaseModel):
     # can be expressed as:
     #  - one value
-    #  - a dict of year:value or region:value or technology:value
+    #  - a dict of year:value OR region:value OR technology:value
     #  - nested technology:{year:value}
     #  - nested region:{technology:{year:value}}
     data: Union[
@@ -39,12 +39,18 @@ class RegionTechnologyYearData(BaseModel):
     ]
 
 class YearData(BaseModel):
+    # can be expressed as:
+    #  - one value
+    #  - a dict of year:value
     data: Union[
         float,
         Dict[int,float]
     ]
 
 class RegionData(BaseModel):
+    # can be expressed as:
+    #  - one value
+    #  - a dict of region:value
     data: Union[
         float,
         Dict[str, float]
@@ -57,7 +63,7 @@ class RegionYearData(BaseModel):
     #  - a dict of region:{year:value}
     data: Union[
         float,
-        Dict[Union[str,int],float],
+        Dict[Union[str,int], float],
         Dict[str,Dict[int,float]]
     ]
 
@@ -77,10 +83,15 @@ class RegionYearTimeData(BaseModel):
         Dict[str, Dict[int, Dict[str, float]]]
     ]
 class RegionCommodityYearData(BaseModel):
+    # can be expressed as:
+    #  - one value
+    #  - a dict of year:value OR region:value OR commodity:value
+    #  - a dict of region:commodity:value OR region:year:value OR commodtiy:year:value
+    #  - nested region:{commodity:{year:value}}
     data: Union[
         float,
         Dict[Union[str,int], float],
-        Dict[str,Union[str,int],float],
-        Dict[str,str,Union[str,int],float]
+        Dict[str,Dict[Union[str,int],float]],
+        Dict[str,Dict[str,Dict[int,float]]]
 
     ]
