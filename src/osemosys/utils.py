@@ -5,13 +5,13 @@ import json
 import os
 import re
 from datetime import datetime, timedelta  # noqa
-from typing import Dict
+from typing import Dict, Optional, List
 
 import pandas as pd
-import defaultdict
+from collections import defaultdict
 import orjson
 
-from osemosys.utils.simpleeval import EvalWithCompoundTypes
+from osemosys.simpleeval import EvalWithCompoundTypes
 
 def _indirect_cls(path):
     mod_name, _cls_name = path.rsplit(".", 1)

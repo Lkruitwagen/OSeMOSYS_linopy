@@ -37,8 +37,7 @@ class RunSpec(OSeMOSYSBase):
     renewable_targets: RegionYearData | None
     
 
-    @classmethod
-    def to_simplicity(cls, root_dir) -> Dict[str,str]:
+    def to_simplicity(self, root_dir) -> Dict[str,str]:
         """
         Dump regions to 
 
@@ -52,6 +51,8 @@ class RunSpec(OSeMOSYSBase):
         Dict[str,str]
             A dictionary with keys the otool filenames and paths the otool paths
         """
+        self.commodities.to_simplicity(root_dir)
+        
         pass
 
     @classmethod
@@ -59,7 +60,7 @@ class RunSpec(OSeMOSYSBase):
 
         def get_depreciation_method(root_dir):
             df = pd.read_csv(os.path.join(root_dir, 'DepreciationMethod.csv'))
-            if df.
+            
 
         def get_discount_rate(root_dir):
 
