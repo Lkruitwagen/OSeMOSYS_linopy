@@ -97,14 +97,3 @@ class RegionCommodityYearData(BaseModel):
         Dict[str,Dict[str,Dict[int,float]]]
 
     ]
-"""
-class TimeDefinition(BaseModel):
-    years: Union[str,List[int]]
-
-
-
-    @classmethod
-    def from_simplicity(cls, root_dir):
-        None
-"""
-        
