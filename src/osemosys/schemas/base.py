@@ -15,12 +15,14 @@ extras:
   - inequality for year, e.g. >=2030
 """
 
+from pydantic import BaseModel
+from typing import Union, Dict, List, Optional
 
 # ####################
 # ### BASE CLASSES ###
 # ####################
 
-class OSeMOSYSBase(BaseModel)
+class OSeMOSYSBase(BaseModel):
     id: str
     long_name: str | None
     description: str | None
@@ -78,7 +80,7 @@ class RegionYearTimeData(BaseModel):
     data: Union[
         float, 
         Dict[str, float], # which one? ambiguous
-        Dict[str, Dict[int, float]]
+        Dict[str, Dict[int, float]],
         Dict[str, Dict[str, float]],
         Dict[str, Dict[int, Dict[str, float]]]
     ]
@@ -95,3 +97,14 @@ class RegionCommodityYearData(BaseModel):
         Dict[str,Dict[str,Dict[int,float]]]
 
     ]
+"""
+class TimeDefinition(BaseModel):
+    years: Union[str,List[int]]
+
+
+
+    @classmethod
+    def from_simplicity(cls, root_dir):
+        None
+"""
+        
