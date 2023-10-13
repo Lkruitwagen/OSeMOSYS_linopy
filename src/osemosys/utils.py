@@ -81,17 +81,17 @@ def makehash():
 def _fill_d(d, target_column, data_columns, t):
     try:
         if len(data_columns) == 2:
-            d[getattr(t, data_columns[0])][getattr(t, data_columns[1])] = getattr(
+            d[str(getattr(t, data_columns[0]))][str(getattr(t, data_columns[1]))] = getattr(
                 t, target_column
             )
         elif len(data_columns) == 3:
-            d[getattr(t, data_columns[0])][getattr(t, data_columns[1])][
-                getattr(t, data_columns[2])
+            d[(getattr(t, data_columns[0]))][str(getattr(t, data_columns[1]))][
+                str(getattr(t, data_columns[2]))
             ] = getattr(t, target_column)
         elif len(data_columns) == 4:
-            d[getattr(t, data_columns[0])][getattr(t, data_columns[1])][
-                getattr(t, data_columns[2])
-            ][getattr(t, data_columns[3])] = getattr(t, target_column)
+            d[str(getattr(t, data_columns[0]))][str(getattr(t, data_columns[1]))][
+                str(getattr(t, data_columns[2]))
+            ][str(getattr(t, data_columns[3]))] = getattr(t, target_column)
         else:
             raise NotImplementedError
     except Exception as e:
@@ -127,4 +127,5 @@ def group_to_json(
         for t in g.drop(columns=[root_column]).itertuples():
             _fill_d(d, target_column, data_columns, t)
 
-    return orjson.loads(orjson.dumps(d))
+    # https://github.com/ijl/orjson#opt_non_str_keys
+    return orjson.loads(orjson.dumps(d, option=orjson.OPT_NON_STR_KEYS))
