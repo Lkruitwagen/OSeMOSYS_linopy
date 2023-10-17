@@ -10,7 +10,7 @@ class Commodity(OSeMOSYSBase):
     # demand_profile may be optionally specified with annual_demand
     demand_annual: RegionYearData | None
     demand_profile: RegionYearTimeData | None
-    demand: RegionYearData | None
+    accumulated_demand: RegionYearData | None
     is_renewable: RegionYearData | None # why would this change over time??
 
     @classmethod
@@ -33,6 +33,9 @@ class Commodity(OSeMOSYSBase):
             commodity_instances.append(
                 cls(
                     id=commodity,
+                    #TODO
+                    long_name = None,
+                    description = None,
                     demand_annual = (
                         RegionYearData(
                         data=group_to_json(
@@ -55,13 +58,31 @@ class Commodity(OSeMOSYSBase):
                         )
                         if commodity in df_demand_profile["FUEL"].values
                         else None),
-                    #TODO
-                    demand = None,
-                    is_renewable = None, 
-                    long_name = None,
-                    description = None
+                    accumulated_demand = (
+                        RegionYearData(
+                            data = group_to_json(
+                                g=df_accumulated_demand.loc[df_accumulated_demand['FUEL']==commodity],
+                                root_column='FUEL',
+                                data_columns=['REGION', 'YEAR'],
+                                target_column='VALUE'
+                            )
+                        )
+                        if commodity in df_accumulated_demand["FUEL"].values
+                        else None),
+                    is_renewable = (
+                        RegionYearData(
+                            data = group_to_json(
+                                g=df_re_tag.loc[df_re_tag['FUEL']==commodity],
+                                root_column='FUEL',
+                                data_columns=['REGION', 'YEAR'],
+                                target_column='VALUE'
+                            )
+                        )
+                        if commodity in df_re_tag["FUEL"].values
+                        else None)             
                 )
             )
+            
         return commodity_instances
 
 
