@@ -24,4 +24,4 @@ for stem in original_files.keys():
 
 # now let's check that all data is equal
 for stem in original_files.keys():
-    assert (pd.read_csv(original_files[stem]).equals(pd.read_csv(compare_files[stem])), f'unequal files: {stem}'
+    assert (pd.read_csv(original_files[stem]).equals(pd.read_csv(compare_files[stem])), f'unequal files: {stem}')
