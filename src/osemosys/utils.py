@@ -80,7 +80,9 @@ def makehash():
 
 def _fill_d(d, target_column, data_columns, t):
     try:
-        if len(data_columns) == 2:
+        if len(data_columns) == 1:
+            d[str(getattr(t, data_columns[0]))] = getattr(t, target_column)
+        elif len(data_columns) == 2:
             d[str(getattr(t, data_columns[0]))][str(getattr(t, data_columns[1]))] = getattr(
                 t, target_column
             )
