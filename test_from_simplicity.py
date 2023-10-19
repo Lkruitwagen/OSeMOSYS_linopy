@@ -10,7 +10,7 @@ comparison_directory = "simplicity_compare/"
 run_spec_object = RunSpec.from_simplicity(root_dir=root_dir)
 
 # type(run_spec_object) == <class RunSpec>
-run_spec_object.to_simplicity(comparison_directory=comparison_directory)
+run_spec_object.to_csv(comparison_directory=comparison_directory)
 
 comparison_files = glob.glob(comparison_directory + "*.csv")
 comparison_files = {Path(f).stem:f for f in comparison_files}

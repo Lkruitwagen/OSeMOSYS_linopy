@@ -46,7 +46,7 @@ class RunSpec(OSeMOSYSBase):
     # Default values
     #TODO
 
-    def to_simplicity(self, comparison_directory) -> Dict[str,str]:
+    def to_csv(self, comparison_directory) -> Dict[str,str]:
         """
         Dump regions to 
 
@@ -60,7 +60,7 @@ class RunSpec(OSeMOSYSBase):
         Dict[str,str]
             A dictionary with keys the otool filenames and paths the otool paths
         """
-        self.commodities.to_simplicity(comparison_directory)
+        self.time_definition.to_csv(comparison_directory, self.time_definition)
         
         pass
 
