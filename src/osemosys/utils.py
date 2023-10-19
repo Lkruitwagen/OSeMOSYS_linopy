@@ -96,6 +96,7 @@ def _fill_d(d, target_column, data_columns, t):
             ][str(getattr(t, data_columns[3]))] = getattr(t, target_column)
         else:
             raise NotImplementedError
+        #TODO add case for where len(data_columns) == 5
     except Exception as e:
         print(t)
         print(target_column)
@@ -107,7 +108,7 @@ def _fill_d(d, target_column, data_columns, t):
 
 def group_to_json(
     g: pd.DataFrame,
-    root_column: str,
+    root_column: Optional[str] = None,
     target_column: str = "value",
     data_columns: Optional[List[str]] = None,
     default_nodes: List[str] = None,
@@ -123,11 +124,13 @@ def group_to_json(
         d = makehash()
 
     if not fill_zero:
-        for t in g.drop(columns=[root_column]).loc[g[target_column] != 0].itertuples():
-            _fill_d(d, target_column, data_columns, t)
-    else:
-        for t in g.drop(columns=[root_column]).itertuples():
-            _fill_d(d, target_column, data_columns, t)
+        g = g.loc[g[target_column] != 0]
+
+    if root_column is not None:
+        g = g.drop(columns=[root_column])
+
+    for t in g.itertuples():
+        _fill_d(d, target_column, data_columns, t)
 
     # https://github.com/ijl/orjson#opt_non_str_keys
     return orjson.loads(orjson.dumps(d, option=orjson.OPT_NON_STR_KEYS))
