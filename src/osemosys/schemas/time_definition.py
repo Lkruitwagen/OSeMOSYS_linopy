@@ -74,8 +74,7 @@ class TimeDefinition(BaseModel):
                         StringYearData(
                             data=group_to_json(
                                 g=df_year_split,
-                                root_column='TIMESLICE',
-                                data_columns=['YEAR'],
+                                data_columns=['TIMESLICE','YEAR'],
                                 target_column='VALUE',
                             )
                         )
@@ -83,9 +82,8 @@ class TimeDefinition(BaseModel):
                     day_split = (
                         IntYearData(
                             data=group_to_json(
-                                g=df_year_split,
-                                root_column='DAILYTIMEBRACKET',
-                                data_columns=['YEAR'],
+                                g=df_day_split,
+                                data_columns=['DAILYTIMEBRACKET','YEAR'],
                                 target_column='VALUE',
                             )
                         )
@@ -93,9 +91,8 @@ class TimeDefinition(BaseModel):
                     days_in_day_type = (
                         IntIntIntData(
                             data=group_to_json(
-                                g=df_year_split,
-                                root_column='SEASON',
-                                data_columns=['DAYTYPE','YEAR'],
+                                g=df_days_in_day_type,
+                                data_columns=['SEASON','DAYTYPE','YEAR'],
                                 target_column='VALUE',
                             )
                         )
@@ -103,9 +100,8 @@ class TimeDefinition(BaseModel):
                     conversion_ld = (
                         StringYearData(
                             data=group_to_json(
-                                g=df_year_split,
-                                root_column='TIMESLICE',
-                                data_columns=['DAYTYPE'],
+                                g=df_conversion_ld,
+                                data_columns=['TIMESLICE','DAYTYPE'],
                                 target_column='VALUE',
                             )
                         )
@@ -113,9 +109,8 @@ class TimeDefinition(BaseModel):
                     conversion_lh = (
                         StringYearData(
                             data=group_to_json(
-                                g=df_year_split,
-                                root_column='TIMESLICE',
-                                data_columns=['DAILYTIMEBRACKET'],
+                                g=df_conversion_lh,
+                                data_columns=['TIMESLICE','DAILYTIMEBRACKET'],
                                 target_column='VALUE',
                             )
                         )
@@ -123,11 +118,90 @@ class TimeDefinition(BaseModel):
                     conversion_ls = (
                         StringYearData(
                             data=group_to_json(
-                                g=df_year_split,
-                                root_column='TIMESLICE',
-                                data_columns=['SEASON'],
+                                g=df_conversion_ls,
+                                data_columns=['TIMESLICE','SEASON'],
                                 target_column='VALUE',
                             )
                         )
                         if not df_conversion_ls.empty else None)
                     )
+
+    @classmethod
+    def to_csv(cls, comparison_directory, time_definition) -> "cls":
+        
+        ### Write sets to csv
+
+        pd.DataFrame({'VALUE': time_definition.years}).to_csv(os.path.join(comparison_directory, 'YEAR.csv'), index=False)
+        pd.DataFrame({'VALUE': time_definition.season}).to_csv(os.path.join(comparison_directory, 'SEASON.csv'), index=False)
+        pd.DataFrame({'VALUE': time_definition.timeslice}).to_csv(os.path.join(comparison_directory, 'TIMESLICE.csv'), index=False)
+        pd.DataFrame({'VALUE': time_definition.day_type}).to_csv(os.path.join(comparison_directory, 'DAYTYPE.csv'), index=False)
+        pd.DataFrame({'VALUE': time_definition.daily_time_bracket}).to_csv(os.path.join(comparison_directory, 'DAILYTIMEBRACKET.csv'), index=False)
+
+
+        ### Write parameters to csv
+
+        #YearSplit
+        if time_definition.year_split is not None:
+            df_year_split = (pd.DataFrame(time_definition.year_split.data)
+                            .reset_index()
+                            .rename(columns={"index":"YEAR"})
+                            .melt(id_vars="YEAR", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","YEAR","VALUE"]])
+            df_year_split.to_csv(os.path.join(comparison_directory, 'YearSplit.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["TIMESLICE","YEAR","VALUE"].to_csv(os.path.join(comparison_directory, 'YearSplit.csv'), index=False))
+
+        # DaySplit
+        if time_definition.day_split is not None:
+            df_day_split = (pd.DataFrame(time_definition.day_split.data)
+                            .reset_index()
+                            .rename(columns={"index":"YEAR"})
+                            .melt(id_vars="YEAR", var_name="DAILYTIMEBRACKET", value_name="VALUE")[["DAILYTIMEBRACKET","YEAR","VALUE"]])
+            df_day_split.to_csv(os.path.join(comparison_directory, 'DaySplit.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["DAILYTIMEBRACKET","YEAR","VALUE"]).to_csv(os.path.join(comparison_directory, 'DaySplit.csv'), index=False)
+        
+        #TODO
+        # DaysinDayType
+        """
+        if time_definition.days_in_day_type is not None:
+            df_days_in_day_type = (pd.DataFrame(time_definition.days_in_day_type.data)
+                            .reset_index()
+                            .rename(columns={"index":"YEAR"})
+                            .melt(id_vars="YEAR", var_name="DAILYTIMEBRACKET", value_name="VALUE")[["DAILYTIMEBRACKET","YEAR","VALUE"]])
+            df_days_in_day_type.to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["DAILYTIMEBRACKET","YEAR","VALUE"]).to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv.csv'), index=False)
+        """
+
+        # Conversionld
+        if time_definition.conversion_ld is not None:
+            df_conversion_ld = (pd.DataFrame(time_definition.conversion_ld.data)
+                            .reset_index()
+                            .rename(columns={"index":"DAYTYPE"})
+                            .melt(id_vars="DAYTYPE", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","DAYTYPE","VALUE"]])
+            df_conversion_ld.to_csv(os.path.join(comparison_directory, 'Conversionld.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["TIMESLICE","DAYTYPE","VALUE"]).to_csv(os.path.join(comparison_directory, 'Conversionld.csv'), index=False)
+
+        # Conversionlh
+        if time_definition.conversion_lh is not None:
+            df_conversion_lh = (pd.DataFrame(time_definition.conversion_lh.data)
+                            .reset_index()
+                            .rename(columns={"index":"DAILYTIMEBRACKET"})
+                            .melt(id_vars="DAILYTIMEBRACKET", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","DAILYTIMEBRACKET","VALUE"]])
+            df_conversion_lh.to_csv(os.path.join(comparison_directory, 'Conversionlh.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["TIMESLICE","DAILYTIMEBRACKET","VALUE"]).to_csv(os.path.join(comparison_directory, 'Conversionlh.csv'), index=False)
+
+        # Conversionls
+        if time_definition.conversion_ls is not None:
+            df_conversion_ls = (pd.DataFrame(time_definition.conversion_ls.data)
+                            .reset_index()
+                            .rename(columns={"index":"SEASON"})
+                            .melt(id_vars="SEASON", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","SEASON","VALUE"]])
+            df_conversion_ls.to_csv(os.path.join(comparison_directory, 'Conversionls.csv'), index=False)
+        else: 
+            pd.DataFrame(columns=["TIMESLICE","SEASON","VALUE"]).to_csv(os.path.join(comparison_directory, 'Conversionls.csv'), index=False)
+
+
+        pass
