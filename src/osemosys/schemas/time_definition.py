@@ -4,7 +4,7 @@ import pandas as pd
 from .base import *
 from osemosys.utils import *
 
-class TimeDefinition(BaseModel):
+class TimeDefinition(OSeMOSYSBase):
     """
     Class to contain all temporal information, including years and timeslices.
     """
