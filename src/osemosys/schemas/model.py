@@ -8,7 +8,7 @@ from .time_definition import *
 from .region import *
 from .commodity import *
 from .impact import *
-#from .technology import *
+from .technology import *
 
 
 class RunSpec(OSeMOSYSBase):
@@ -107,6 +107,8 @@ class RunSpec(OSeMOSYSBase):
             discount_rate=discount_rate,
             impacts=Impact.from_otoole_csv(root_dir=root_dir),
             regions=Region.from_otoole_csv(root_dir=root_dir),
+            technologies=Technology.from_otoole_csv(root_dir=root_dir),
+            storage_technologies=TechnologyStorage.from_otoole_csv(root_dir=root_dir),
             #TODO
             #production_technologies=TechnologyProduction.from_otoole_csv(root_dir=root_dir),
             #storage_technologies=TechnologyStorage.from_otoole_csv(root_dir=root_dir),
