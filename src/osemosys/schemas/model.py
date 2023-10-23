@@ -8,7 +8,7 @@ from .time_definition import *
 from .region import *
 from .commodity import *
 from .impact import *
-from .technology import *
+#from .technology import *
 
 
 class RunSpec(OSeMOSYSBase):
@@ -46,7 +46,7 @@ class RunSpec(OSeMOSYSBase):
     # Default values
     #TODO
 
-    def to_csv(self, comparison_directory) -> Dict[str,str]:
+    def to_otoole_csv(self, comparison_directory) -> Dict[str,str]:
         """
         Dump regions to 
 
@@ -60,12 +60,12 @@ class RunSpec(OSeMOSYSBase):
         Dict[str,str]
             A dictionary with keys the otool filenames and paths the otool paths
         """
-        self.time_definition.to_csv(comparison_directory, self.time_definition)
+        self.time_definition.to_otoole_csv(comparison_directory, self.time_definition)
         
         pass
 
     @classmethod
-    def from_simplicity(cls, root_dir) -> "cls":
+    def from_otoole_csv(cls, root_dir) -> "cls":
 
         def get_depreciation_method(root_dir):
             df = pd.read_csv(os.path.join(root_dir, 'DepreciationMethod.csv'))
@@ -105,14 +105,14 @@ class RunSpec(OSeMOSYSBase):
             description = None,
             depreciation_method = depreciation_method,
             discount_rate=discount_rate,
-            impacts=Impact.from_simplicity(root_dir=root_dir),
-            regions=Region.from_simplicity(root_dir=root_dir),
+            impacts=Impact.from_otoole_csv(root_dir=root_dir),
+            regions=Region.from_otoole_csv(root_dir=root_dir),
             #TODO
-            #production_technologies=TechnologyProduction.from_simplicity(root_dir=root_dir),
-            #storage_technologies=TechnologyStorage.from_simplicity(root_dir=root_dir),
-            #transmission_technologies=TechnologyTransmission.from_simplicity(root_dir=root_dir),
-            commodities=Commodity.from_simplicity(root_dir=root_dir),
-            time_definition=TimeDefinition.from_simplicity(root_dir=root_dir),
+            #production_technologies=TechnologyProduction.from_otoole_csv(root_dir=root_dir),
+            #storage_technologies=TechnologyStorage.from_otoole_csv(root_dir=root_dir),
+            #transmission_technologies=TechnologyTransmission.from_otoole_csv(root_dir=root_dir),
+            commodities=Commodity.from_otoole_csv(root_dir=root_dir),
+            time_definition=TimeDefinition.from_otoole_csv(root_dir=root_dir),
             reserve_margins_level=reserve_margins_level, 
             reserve_margins_commodity=reserve_margins_commodity,
             reserve_margins_technology=reserve_margins_technology,

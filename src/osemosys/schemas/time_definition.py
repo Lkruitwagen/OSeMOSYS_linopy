@@ -26,14 +26,14 @@ class TimeDefinition(OSeMOSYSBase):
 
 
     @classmethod
-    def from_simplicity(cls, root_dir) -> "cls":
+    def from_otoole_csv(cls, root_dir) -> "cls":
         """
         Instantiate a single TimeDefinition object containing all relevant data from otoole-organised csvs.
 
         Parameters
         ----------
         root_dir: str
-            Path to the root of the simplicity directory
+            Path to the root of the otoole csv directory
 
         Returns
         -------
@@ -127,7 +127,7 @@ class TimeDefinition(OSeMOSYSBase):
                     )
 
     @classmethod
-    def to_csv(cls, comparison_directory, time_definition) -> "cls":
+    def to_otoole_csv(cls, comparison_directory, time_definition) -> "cls":
         
         ### Write sets to csv
 
