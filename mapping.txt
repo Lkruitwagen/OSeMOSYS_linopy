@@ -3,8 +3,8 @@ AnnualEmissionLimit.csv                           -> Impact.constraint
 AnnualExogenousEmission.csv                       -> Impact.exogenous
 AvailabilityFactor.csv                            -> Technology.AvailabilityFactor.
 CapacityFactor.csv                                -> Technology.CapacityFactor
-CapacityOfOneTechnologyUnit.csv                   -> Technology.capacity_addition_size
-CapacityToActivityUnit.csv                        -> Technology.activity_unit_ratio
+CapacityOfOneTechnologyUnit.csv                   -> Technology.capacity_one_tech_unit
+CapacityToActivityUnit.csv                        -> Technology.capacity_activity_unit_ratio
 CapitalCost.csv                                   -> Technology.capex
 CapitalCostStorage.csv                            -> Technology.capex
 Conversionld.csv                                  -> TimeDefinition (day, mapping between discrete timeparts)
@@ -29,7 +29,7 @@ ModelPeriodEmissionLimit.csv                      -> Impact.constraint
 ModelPeriodExogenousEmission.csv                  -> Impact.exogenous
 MODE_OF_OPERATION.csv                             -> Technology.operating_modes
 OperationalLife.csv                               -> Technology.operating_life
-OperationalLifeStorage.csv                        -> Technology.operating_life
+OperationalLifeStorage.csv                        -> TechnologyStorage.operating_life
 OutputActivityRatio.csv                           -> Technology.op_mode[].output_activity_ratio
 _REGION.csv                                       -> Region
 REGION.csv                                        -> Region
@@ -38,7 +38,7 @@ ReserveMargin.csv                                 -> Model.reserve_margin_level
 ReserveMarginTagFuel.csv                          -> Model.reserve_margin_commodity
 ReserveMarginTagTechnology.csv                    -> Model.reserve_margin_technology
 ResidualCapacity.csv                              -> Technology.residual_capacity
-ResidualStorageCapacity.csv                       -> Technology.residual_capacity
+ResidualStorageCapacity.csv                       -> TechnologyStorage.residual_capacity
 RETagFuel.csv                                     -> Commodity.is_renewable
 RETagTechnology.csv                               -> Technology.is_renewable
 SEASON.csv                                        -> TimeDefinition
@@ -52,14 +52,14 @@ TECHNOLOGY.csv                                    -> Technology
 TechnologyFromStorage.csv                         -> Technology.opmode[].from_storage
 TechnologyToStorage.csv                           -> technology.opmode[].to_storage
 TIMESLICE.csv                                     -> TimeDefinition
-TotalAnnualMaxCapacity.csv                        -> Technology.gross_capacity_max
-TotalAnnualMaxCapacityInvestment.csv              -> Technology.additional_capacity_max
-TotalAnnualMinCapacity.csv                        -> Technology.gross_capacity_min
-TotalAnnualMinCapacityInvestment.csv              -> Technology.additional_capacity_min
-TotalTechnologyAnnualActivityLowerLimit.csv       -> Technology.annual_activity_max
-TotalTechnologyAnnualActivityUpperLimit.csv       -> Technology.annual_activity_min
-TotalTechnologyModelPeriodActivityLowerLimit.csv  -> Technology.total_activity_max
-TotalTechnologyModelPeriodActivityUpperLimit.csv  -> Technology.total_activity_min
+TotalAnnualMaxCapacity.csv                        -> Technology.capacity_gross_max
+TotalAnnualMaxCapacityInvestment.csv              -> Technology.capacity_additional_max
+TotalAnnualMinCapacity.csv                        -> Technology.capacity_gross_min
+TotalAnnualMinCapacityInvestment.csv              -> Technology.capacity_additional_min
+TotalTechnologyAnnualActivityLowerLimit.csv       -> Technology.activity_annual_max
+TotalTechnologyAnnualActivityUpperLimit.csv       -> Technology.activity_annual_min
+TotalTechnologyModelPeriodActivityLowerLimit.csv  -> Technology.activity_total_max
+TotalTechnologyModelPeriodActivityUpperLimit.csv  -> Technology.activity_total_min
 TradeRoute.csv                                    -> TechnologyTransmission
 VariableCost.csv                                  -> Technology.opmode[].opex_variable
 YEAR.csv                                          -> TimeDefinition.years
