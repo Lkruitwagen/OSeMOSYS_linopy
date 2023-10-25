@@ -1,5 +1,5 @@
 AccumulatedAnnualDemand.csv                       -> Commodity.annual_demand
-AnnualEmissionLimit.csv                           -> Impact.constaint
+AnnualEmissionLimit.csv                           -> Impact.constraint
 AnnualExogenousEmission.csv                       -> Impact.exogenous
 AvailabilityFactor.csv                            -> Technology.AvailabilityFactor.
 CapacityFactor.csv                                -> Technology.CapacityFactor
@@ -34,7 +34,7 @@ OutputActivityRatio.csv                           -> Technology.op_mode[].output
 _REGION.csv                                       -> Region
 REGION.csv                                        -> Region
 REMinProductionTarget.csv                         -> Model.renewable_target
-ReserveMargin.csv                                 -> Model.reserve_margin_X
+ReserveMargin.csv                                 -> Model.reserve_margin_level
 ReserveMarginTagFuel.csv                          -> Model.reserve_margin_commodity
 ReserveMarginTagTechnology.csv                    -> Model.reserve_margin_technology
 ResidualCapacity.csv                              -> Technology.residual_capacity

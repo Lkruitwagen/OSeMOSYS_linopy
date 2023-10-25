@@ -69,11 +69,42 @@ class RegionYearData(BaseModel):
         Dict[str,Dict[int,float]]
     ]
 
+class StringYearData(BaseModel):
+    # can be expressed as:
+    #  - one value
+    #  - a dict of year:value OR region:value
+    #  - a dict of region:{year:value}
+    data: Union[
+        Union[float,int],
+        Dict[Union[str,int], Union[float,int]],
+        Dict[str,Dict[int,Union[float,int]]]
+    ]
+
+class IntYearData(BaseModel):
+    # can be expressed as:
+    #  - one integer value
+    #  - a dict of year:value OR integer:value
+    #  - a dict of int:{year:value}
+    data: Union[
+        Union[float,int],
+        Dict[int, Union[float,int]],
+        Dict[int,Dict[int,Union[float,int]]]
+    ]
+
+class IntIntIntData(BaseModel):
+    # can be expressed as:
+    #  - integer or float value with 0-3 additional integers
+    data: Union[
+        Union[int,float],
+        Dict[int, Union[int,float]],
+        Dict[int,Dict[int,Union[int,float]]],
+        Dict[int,Dict[int,Dict[int,Union[int,float]]]]
+    ]
+
 class RegionYearTimeData(BaseModel):
     # can be expressed as:
     #  - one value
-    #  - a dict of region:value
-    #  - a dict of timeslice:value
+    #  - a dict of region:value OR timeslice:value
     #  - a dict of region:year:value
     #  - a dict of region:timeslice:value
     #  - a dict of region:{year:{timeslice:value}}
@@ -82,8 +113,9 @@ class RegionYearTimeData(BaseModel):
         Dict[str, float], # which one? ambiguous
         Dict[str, Dict[int, float]],
         Dict[str, Dict[str, float]],
-        Dict[str, Dict[int, Dict[str, float]]]
+        Dict[str, Dict[str, Dict[int, float]]]
     ]
+
 class RegionCommodityYearData(BaseModel):
     # can be expressed as:
     #  - one value
@@ -95,5 +127,4 @@ class RegionCommodityYearData(BaseModel):
         Dict[Union[str,int], float],
         Dict[str,Dict[Union[str,int],float]],
         Dict[str,Dict[str,Dict[int,float]]]
-
     ]

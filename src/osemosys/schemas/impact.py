@@ -22,14 +22,14 @@ class Impact(OSeMOSYSBase):
 
 
     @classmethod
-    def from_simplicity(cls, root_dir) -> List["cls"]:
+    def from_otoole_csv(cls, root_dir) -> List["cls"]:
         """
         Instantiate a number of Impact objects from otoole-organised csvs.
 
         Parameters
         ----------
         root_dir: str
-            Path to the root of the simplicity directory
+            Path to the root of the otoole csv directory
 
         Returns
         -------

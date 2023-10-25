@@ -14,7 +14,7 @@ class Commodity(OSeMOSYSBase):
     is_renewable: RegionYearData | None # why would this change over time??
 
     @classmethod
-    def from_simplicity(cls, root_dir) -> List["cls"]:
+    def from_otoole_csv(cls, root_dir) -> List["cls"]:
 
         # 
         df_fuel = pd.read_csv(os.path.join(root_dir, 'FUEL.csv'))
