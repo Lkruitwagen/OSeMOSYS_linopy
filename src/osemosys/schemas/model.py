@@ -60,8 +60,10 @@ class RunSpec(OSeMOSYSBase):
         Dict[str,str]
             A dictionary with keys the otool filenames and paths the otool paths
         """
-        self.time_definition.to_otoole_csv(comparison_directory, self.time_definition)
-        
+        self.time_definition.to_otoole_csv(comparison_directory)
+        for commodity in self.commodities:
+            commodity.to_otoole_csv(comparison_directory)
+
         pass
 
     @classmethod
@@ -111,7 +113,6 @@ class RunSpec(OSeMOSYSBase):
             storage_technologies=TechnologyStorage.from_otoole_csv(root_dir=root_dir),
             #TODO
             #production_technologies=TechnologyProduction.from_otoole_csv(root_dir=root_dir),
-            #storage_technologies=TechnologyStorage.from_otoole_csv(root_dir=root_dir),
             #transmission_technologies=TechnologyTransmission.from_otoole_csv(root_dir=root_dir),
             commodities=Commodity.from_otoole_csv(root_dir=root_dir),
             time_definition=TimeDefinition.from_otoole_csv(root_dir=root_dir),
