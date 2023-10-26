@@ -126,23 +126,22 @@ class TimeDefinition(OSeMOSYSBase):
                         if not df_conversion_ls.empty else None)
                     )
 
-    @classmethod
-    def to_otoole_csv(cls, comparison_directory, time_definition) -> "cls":
+    def to_otoole_csv(self, comparison_directory) -> "cls":
         
         ### Write sets to csv
 
-        pd.DataFrame({'VALUE': time_definition.years}).to_csv(os.path.join(comparison_directory, 'YEAR.csv'), index=False)
-        pd.DataFrame({'VALUE': time_definition.season}).to_csv(os.path.join(comparison_directory, 'SEASON.csv'), index=False)
-        pd.DataFrame({'VALUE': time_definition.timeslice}).to_csv(os.path.join(comparison_directory, 'TIMESLICE.csv'), index=False)
-        pd.DataFrame({'VALUE': time_definition.day_type}).to_csv(os.path.join(comparison_directory, 'DAYTYPE.csv'), index=False)
-        pd.DataFrame({'VALUE': time_definition.daily_time_bracket}).to_csv(os.path.join(comparison_directory, 'DAILYTIMEBRACKET.csv'), index=False)
+        pd.DataFrame({'VALUE': self.years}).to_csv(os.path.join(comparison_directory, 'YEAR.csv'), index=False)
+        pd.DataFrame({'VALUE': self.season}).to_csv(os.path.join(comparison_directory, 'SEASON.csv'), index=False)
+        pd.DataFrame({'VALUE': self.timeslice}).to_csv(os.path.join(comparison_directory, 'TIMESLICE.csv'), index=False)
+        pd.DataFrame({'VALUE': self.day_type}).to_csv(os.path.join(comparison_directory, 'DAYTYPE.csv'), index=False)
+        pd.DataFrame({'VALUE': self.daily_time_bracket}).to_csv(os.path.join(comparison_directory, 'DAILYTIMEBRACKET.csv'), index=False)
 
 
         ### Write parameters to csv
 
         #YearSplit
-        if time_definition.year_split is not None:
-            df_year_split = (pd.DataFrame(time_definition.year_split.data)
+        if self.year_split is not None:
+            df_year_split = (pd.DataFrame(self.year_split.data)
                             .reset_index()
                             .rename(columns={"index":"YEAR"})
                             .melt(id_vars="YEAR", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","YEAR","VALUE"]])
@@ -151,8 +150,8 @@ class TimeDefinition(OSeMOSYSBase):
             pd.DataFrame(columns=["TIMESLICE","YEAR","VALUE"].to_csv(os.path.join(comparison_directory, 'YearSplit.csv'), index=False))
 
         # DaySplit
-        if time_definition.day_split is not None:
-            df_day_split = (pd.DataFrame(time_definition.day_split.data)
+        if self.day_split is not None:
+            df_day_split = (pd.DataFrame(self.day_split.data)
                             .reset_index()
                             .rename(columns={"index":"YEAR"})
                             .melt(id_vars="YEAR", var_name="DAILYTIMEBRACKET", value_name="VALUE")[["DAILYTIMEBRACKET","YEAR","VALUE"]])
@@ -160,22 +159,17 @@ class TimeDefinition(OSeMOSYSBase):
         else: 
             pd.DataFrame(columns=["DAILYTIMEBRACKET","YEAR","VALUE"]).to_csv(os.path.join(comparison_directory, 'DaySplit.csv'), index=False)
         
-        #TODO
         # DaysinDayType
-        """
-        if time_definition.days_in_day_type is not None:
-            df_days_in_day_type = (pd.DataFrame(time_definition.days_in_day_type.data)
-                            .reset_index()
-                            .rename(columns={"index":"YEAR"})
-                            .melt(id_vars="YEAR", var_name="DAILYTIMEBRACKET", value_name="VALUE")[["DAILYTIMEBRACKET","YEAR","VALUE"]])
-            df_days_in_day_type.to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv.csv'), index=False)
+        if self.days_in_day_type is not None:
+            df_days_in_day_type = json_dict_to_dataframe(self.days_in_day_type.data)
+            df_days_in_day_type.columns = ["SEASON","DAYTYPE","YEAR","VALUE"]
+            df_days_in_day_type.to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv'), index=False)
         else: 
-            pd.DataFrame(columns=["DAILYTIMEBRACKET","YEAR","VALUE"]).to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv.csv'), index=False)
-        """
-
+            pd.DataFrame(columns=["SEASON","DAYTYPE","YEAR","VALUE"]).to_csv(os.path.join(comparison_directory, 'DaysInDayType.csv'), index=False)
+        
         # Conversionld
-        if time_definition.conversion_ld is not None:
-            df_conversion_ld = (pd.DataFrame(time_definition.conversion_ld.data)
+        if self.conversion_ld is not None:
+            df_conversion_ld = (pd.DataFrame(self.conversion_ld.data)
                             .reset_index()
                             .rename(columns={"index":"DAYTYPE"})
                             .melt(id_vars="DAYTYPE", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","DAYTYPE","VALUE"]])
@@ -184,8 +178,8 @@ class TimeDefinition(OSeMOSYSBase):
             pd.DataFrame(columns=["TIMESLICE","DAYTYPE","VALUE"]).to_csv(os.path.join(comparison_directory, 'Conversionld.csv'), index=False)
 
         # Conversionlh
-        if time_definition.conversion_lh is not None:
-            df_conversion_lh = (pd.DataFrame(time_definition.conversion_lh.data)
+        if self.conversion_lh is not None:
+            df_conversion_lh = (pd.DataFrame(self.conversion_lh.data)
                             .reset_index()
                             .rename(columns={"index":"DAILYTIMEBRACKET"})
                             .melt(id_vars="DAILYTIMEBRACKET", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","DAILYTIMEBRACKET","VALUE"]])
@@ -194,8 +188,8 @@ class TimeDefinition(OSeMOSYSBase):
             pd.DataFrame(columns=["TIMESLICE","DAILYTIMEBRACKET","VALUE"]).to_csv(os.path.join(comparison_directory, 'Conversionlh.csv'), index=False)
 
         # Conversionls
-        if time_definition.conversion_ls is not None:
-            df_conversion_ls = (pd.DataFrame(time_definition.conversion_ls.data)
+        if self.conversion_ls is not None:
+            df_conversion_ls = (pd.DataFrame(self.conversion_ls.data)
                             .reset_index()
                             .rename(columns={"index":"SEASON"})
                             .melt(id_vars="SEASON", var_name="TIMESLICE", value_name="VALUE")[["TIMESLICE","SEASON","VALUE"]])
