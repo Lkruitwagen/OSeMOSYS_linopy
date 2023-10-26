@@ -134,3 +134,30 @@ def group_to_json(
 
     # https://github.com/ijl/orjson#opt_non_str_keys
     return orjson.loads(orjson.dumps(d, option=orjson.OPT_NON_STR_KEYS))
+
+
+def json_dict_to_dataframe(data, prefix=''):
+    """
+    Function to convert a JSON dictionary as defined by the group_to_json() function into a pandas dataframe with empty column names
+    """
+    if isinstance(data, dict):
+        # If data is a dictionary, iterate through its items
+        result = pd.DataFrame()
+        for key, value in data.items():
+            new_prefix = f"{prefix}.{key}" if prefix else key
+            df = json_dict_to_dataframe(value, new_prefix)
+            result = pd.concat([result, df], axis=1)
+        if prefix=='':  # Execute this step if all iterations complete and final result ready to be returned
+            result = result.T
+            result = result.reset_index()
+            result = pd.concat([result['index'].str.split('.', expand=True), result[0]], axis=1)
+            return result
+        else:
+            return result
+    else:
+        # If data is not a dictionary, create a single-column DataFrame with empty column name, used in iteration
+        return pd.DataFrame({prefix: [data]})
+    
+#TODO
+def to_csv_iterative(data,commodity,column_structure,id_column,csv_name):
+    pass
