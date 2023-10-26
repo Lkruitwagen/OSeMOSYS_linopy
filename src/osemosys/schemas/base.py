@@ -128,3 +128,25 @@ class RegionCommodityYearData(BaseModel):
         Dict[str,Dict[Union[str,int],float]],
         Dict[str,Dict[str,Dict[int,float]]]
     ]
+
+class RegionModeYearData(BaseModel):
+    # Where Mode is mode of operation
+    #  can be expressed as:
+    #  - one value
+    #  - a dict of region:value OR mode:value or year:value
+    #  - a dict of region:year:value OR region:mode:value OR mode:year:value
+    #  - a dict of region:{mode:{year:value}}
+    data: Union[
+        float, 
+        Dict[Union[str,int], float],
+        Dict[Union[str,int], Dict[int,float]],
+        Dict[str, Dict[int, Dict[int,float]]]
+    ]
+
+#TODO temporary class for input/output/emission activity ratio
+class StringStringIntIntData(BaseModel):
+    data: Union[
+        Dict[str, Dict[str, Dict[int, Dict[int,Union[int, float]]]]],
+        Dict[str, Dict[str, Dict[int, Union[int, float]]]]
+    ]
+    
